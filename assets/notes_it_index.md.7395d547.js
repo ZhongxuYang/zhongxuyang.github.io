@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as a}from"./app.c71022fd.js";const _=JSON.parse('{"title":"IT","description":"","frontmatter":{"title":"IT","page":true,"lang":"zh-CN","aside":false},"headers":[],"relativePath":"notes/it/index.md","lastUpdated":null}'),n={name:"notes/it/index.md"};function s(o,r,i,c,d,p){return a(),t("div")}const f=e(n,[["render",s]]);export{_ as __pageData,f as default};
