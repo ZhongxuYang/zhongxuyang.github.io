@@ -1,11 +1,105 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home - zhongxuyang.github.io</title>
   <script>
+    const updateCanvas = () => {
+      const el = document.getElementById('canvas');
+      const w = window.innerWidth
+      const h = window.innerHeight
+      const max = Math.max(w, h)
+      el.setAttribute('width', w * window.devicePixelRatio)
+      el.setAttribute('height', h * window.devicePixelRatio)
+      const ctx = el.getContext('2d');
+      ctx.save()
+      // 缩放画布
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      // 清空画布
+      ctx.clearRect(0, 0, el.width, el.height);
+
+      // 将坐标系移动到中心
+      ctx.translate(w / 2, h / 2);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+
+      ctx.rotate(-Math.PI / 2);
+
+
+      // // 绘制表盘
+      // ctx.beginPath();
+      // ctx.arc(0, 0, w / 2, 0, Math.PI * 2);
+      // ctx.stroke();
+
+      // // 绘制刻度线
+      // for (let i = 0; i < 12; i++) {
+      //   const angle = i * Math.PI / 6;
+      //   const x1 = 45 * Math.cos(angle);
+      //   const y1 = 45 * Math.sin(angle);
+      //   const x2 = 50 * Math.cos(angle);
+      //   const y2 = 50 * Math.sin(angle);
+      //   ctx.beginPath();
+      //   ctx.moveTo(x1, y1);
+      //   ctx.lineTo(x2, y2);
+      //   ctx.stroke();
+      // }
+
+      // 获取当前时间
+      const now = new Date();
+      const hours = now.getHours() % 12;
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const milliseconds = now.getMilliseconds();
+
+      // 计算毫秒对应的角度
+      // const millisecondAngle = milliseconds / 1000 * Math.PI * 2 ;
+
+      // const millisecondAngle = milliseconds / 1000 * Math.PI 
+      // 计算时针、分针、秒针的角度
+      const hourAngle = (hours + minutes / 60) * Math.PI / 6;
+      const minuteAngle = (minutes + seconds / 60) * Math.PI / 30;
+      const secondAngle = (seconds + milliseconds / 1000) * Math.PI / 30;
+      console.log(hours, minutes, seconds, milliseconds, '-', hourAngle, minuteAngle, secondAngle);
+      // 绘制时针
+      ctx.save();
+      ctx.rotate(hourAngle);
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(max, 0);
+      ctx.stroke();
+      ctx.restore();
+
+      // 绘制分针
+      ctx.save();
+      ctx.rotate(minuteAngle);
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(max, 0);
+      ctx.stroke();
+      ctx.restore();
+
+      // 绘制秒针
+      ctx.save();
+      ctx.rotate(secondAngle);
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      // ctx.strokeStyle = '#ff0000';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(max, 0);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.restore();
+
+    }
     const updateTimeSincePageLoad = () => {
       const seconds = Math.floor((new Date() - window.performance.timing.navigationStart) / 1000);
 
@@ -43,11 +137,14 @@
       if (el) {
         el.innerText = str
       }
-  
-      window.requestAnimationFrame(updateTimeSincePageLoad)
     }
 
-    window.requestAnimationFrame(updateTimeSincePageLoad)
+    const updateAnimation = () => {
+      updateTimeSincePageLoad()
+      updateCanvas()
+      window.requestAnimationFrame(updateAnimation)
+    }
+    window.requestAnimationFrame(updateAnimation)
   </script>
   <style>
     a {
@@ -64,22 +161,28 @@
       color: inherit;
       text-decoration: none;
     }
+
     ::selection {
       background-color: #6A9955;
       color: black;
     }
-    html, body, .root{
+
+    html,
+    body,
+    .root {
       height: 100%;
       margin: 0;
       padding: 0;
       background-color: #202020;
     }
-    .flex{
+
+    .flex {
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .flex-col{
+
+    .flex-col {
       flex-direction: column;
     }
   </style>
@@ -91,25 +194,44 @@
       align-items: center;
       color: #C5C5C5;
     }
-    h1 img{
-      width: 200px;
-      height: 200px;
-      border-radius: 5px;
-    }
-    #info{
+
+    #info {
       font-size: 14px;
       color: #4F4F4F;
     }
+
+    .profile {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    .profile>* {
+      /* position: absolute; */
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+    }
+
+    canvas {
+      position: fixed;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
   </style>
 </head>
+
 <body>
   <div class="root flex flex-col">
+    <canvas id="canvas" width="400" height="400"></canvas>
     <h1>
-      <div>
-        <a href="https://github.com/ZhongxuYang">
+      <a href="https://github.com/ZhongxuYang">
+        <div class="profile">
           <img src="https://avatars.githubusercontent.com/u/20455656?v=4" alt="avatar" />
-        </a>
-      </div>
+        </div>
+      </a>
       <p>
         <a href="mailto:himatthew@foxmail.com">/* Zhongxu Yang */</a>
       </p>
@@ -120,4 +242,5 @@
     </div>
   </div>
 </body>
+
 </html>
