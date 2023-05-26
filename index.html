@@ -39,7 +39,7 @@
       }
       const str = `You, ${interval}${intervalType}前 · Uncommitted changes`
       const el = document.getElementById('info')
-      el?.innerText = str
+      el && (el.innerText = str)
   
       window.requestAnimationFrame(updateTimeSincePageLoad)
     }
