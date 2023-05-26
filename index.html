@@ -12,34 +12,37 @@
       let intervalType;
       let interval = Math.floor(seconds / 31536000); // 年
       if (interval >= 1) {
-        intervalType = "年";
+        intervalType = "year";
       } else {
         interval = Math.floor(seconds / 2592000); // 月
         if (interval >= 1) {
-          intervalType = "月";
+          intervalType = "month";
         } else {
           interval = Math.floor(seconds / 86400); // 天
           if (interval >= 1) {
-            intervalType = "天";
+            intervalType = "day";
           } else {
             interval = Math.floor(seconds / 3600); // 小时
             if (interval >= 1) {
-              intervalType = "小时";
+              intervalType = "hour";
             } else {
               interval = Math.floor(seconds / 60); // 分钟
               if (interval >= 1) {
-                intervalType = "分钟";
+                intervalType = "minute";
               } else {
                 interval = seconds; // 秒
-                intervalType = "秒";
+                intervalType = "second";
               }
             }
           }
         }
       }
-      const str = `You, ${interval}${intervalType}前 · Uncommitted changes`
+      intervalType = interval > 1 ? intervalType + 's' : intervalType
+      const str = `You, ${interval} ${intervalType} ago · Uncommitted changes`
       const el = document.getElementById('info')
-      el && (el.innerText = str)
+      if (el) {
+        el.innerText = str
+      }
   
       window.requestAnimationFrame(updateTimeSincePageLoad)
     }
