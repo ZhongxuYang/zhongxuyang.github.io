@@ -38,10 +38,11 @@
         }
       }
       const str = `You, ${interval}${intervalType}前 · Uncommitted changes`
-    const el = document.getElementById('info')
-    el.innerText = str
-    window.requestAnimationFrame(updateTimeSincePageLoad); // 递归调用自身，实现实时更新时间
-  };
+      const el = document.getElementById('info')
+      el?.innerText = str
+  
+      window.requestAnimationFrame(updateTimeSincePageLoad)
+    }
 
     window.requestAnimationFrame(updateTimeSincePageLoad)
   </script>
@@ -98,12 +99,16 @@
 </head>
 <body>
   <div class="root flex flex-col">
-    <a href="https://github.com/ZhongxuYang">
-      <h1>
-        <img src="https://avatars.githubusercontent.com/u/20455656?v=4" alt="" srcset="">
-        <p>/* Zhongxu Yang */</p>
-      </h1>
-    </a>
+    <h1>
+      <div>
+        <a href="https://github.com/ZhongxuYang">
+          <img src="https://avatars.githubusercontent.com/u/20455656?v=4" alt="avatar" />
+        </a>
+      </div>
+      <p>
+        <a href="mailto:himatthew@foxmail.com">/* Zhongxu Yang */</a>
+      </p>
+    </h1>
 
     <div style="width: 100%; text-align: center;">
       <p id="info"></p>
