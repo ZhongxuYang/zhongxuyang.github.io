@@ -14,6 +14,7 @@
   <script>
     const updateCanvas = () => {
       const el = document.getElementById('canvas');
+      if (!el) return
       const w = window.innerWidth
       const h = window.innerHeight
       const max = Math.max(w, h)
@@ -65,9 +66,9 @@
 
 
       // 绘制表盘
-      ctx.beginPath();
-      ctx.arc(0, 0, max / 2, 0, Math.PI * 2);
-      ctx.stroke();
+      // ctx.beginPath();
+      // ctx.arc(0, 0, max / 2, 0, Math.PI * 2);
+      // ctx.stroke();
 
       // // 绘制刻度线
       // for (let i = 0; i < 12; i++) {
