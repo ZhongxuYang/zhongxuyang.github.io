@@ -5,34 +5,69 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - zhongxuyang.github.io</title>
+  <title>Zhongxu Yang - Home</title>
+  <link rel="icon" href="https://avatars.githubusercontent.com/u/20455656?v=4">
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault())
+  </script>
+  <!-- 动画 -->
   <script>
     const updateCanvas = () => {
       const el = document.getElementById('canvas');
       const w = window.innerWidth
       const h = window.innerHeight
       const max = Math.max(w, h)
+      const min = Math.min(w, h)
       el.setAttribute('width', w * window.devicePixelRatio)
       el.setAttribute('height', h * window.devicePixelRatio)
       const ctx = el.getContext('2d');
+
+
       ctx.save()
       // 缩放画布
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
       // 清空画布
       ctx.clearRect(0, 0, el.width, el.height);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+
+
+
+      // 绘制当前时间在本年的进度边框
+      const now = new Date();
+      ctx.save()
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
+      const timeDiff = now.getTime() - startOfYear.getTime();
+      const yearProgress = timeDiff / (endOfYear.getTime() - startOfYear.getTime());
+      ctx.beginPath();
+      ctx.lineWidth = 5;
+      ctx.fillStyle = `rgba(0, 0, 0, ${yearProgress / 5})`;
+
+      ctx.rect(0, h - h * yearProgress, w, h * yearProgress);
+      ctx.fill();
+      ctx.restore()
+
+      // ctx.fillStyle = '#fff'
+      // for (let i = 0; i < 12; i++) {
+      //   ctx.beginPath();
+      //   const y = h / 12 * (12 - i)
+      //   ctx.moveTo(w, y)
+      //   ctx.lineTo(w - 10, y)
+      //   // ctx.fillText(i + 1, w - 15, y - 10)
+      //   ctx.stroke()
+      // }
 
       // 将坐标系移动到中心
       ctx.translate(w / 2, h / 2);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
 
       ctx.rotate(-Math.PI / 2);
 
 
-      // // 绘制表盘
-      // ctx.beginPath();
-      // ctx.arc(0, 0, w / 2, 0, Math.PI * 2);
-      // ctx.stroke();
+      // 绘制表盘
+      ctx.beginPath();
+      ctx.arc(0, 0, max / 2, 0, Math.PI * 2);
+      ctx.stroke();
 
       // // 绘制刻度线
       // for (let i = 0; i < 12; i++) {
@@ -48,7 +83,6 @@
       // }
 
       // 获取当前时间
-      const now = new Date();
       const hours = now.getHours() % 12;
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
@@ -62,7 +96,7 @@
       const hourAngle = (hours + minutes / 60) * Math.PI / 6;
       const minuteAngle = (minutes + seconds / 60) * Math.PI / 30;
       const secondAngle = (seconds + milliseconds / 1000) * Math.PI / 30;
-      console.log(hours, minutes, seconds, milliseconds, '-', hourAngle, minuteAngle, secondAngle);
+
       // 绘制时针
       ctx.save();
       ctx.rotate(hourAngle);
@@ -146,14 +180,62 @@
     }
     window.requestAnimationFrame(updateAnimation)
   </script>
+  <!-- 全屏 -->
+  <script>
+    document.addEventListener("keydown", function (e) {
+      if (e.keyCode === 13) {
+        toggleFullScreen();
+      }
+    }, false);
+    function toggleFullScreen() {
+      const el = document.getElementById('canvas');
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        el.setAttribute('class', 'upper')
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+          el.removeAttribute('class')
+        }
+      }
+    }
+  </script>
+  <script>
+    document.addEventListener("keydown", function (e) {
+      // e.preventDefault()
+
+      const ifCtrl = e.ctrlKey
+      const ifCommand = e.metaKey
+
+      if (!(ifCtrl || ifCommand)) return
+      console.log(`${e.key}: ${e.keyCode}`);
+      switch (e.keyCode) {
+        case 66:
+          location.href = 'https://zhongxuyang.github.io/blog'
+          break;
+        case 82:
+          location.href = 'https://zhongxuyang.github.io/renderer2d'
+          break;
+      
+        default:
+          break;
+      }
+    }, false)
+  </script>
   <style>
+    :root {
+      --theme-color: #248067;
+    }
+
     a {
       color: inherit;
       text-decoration: none;
+      transition: 200ms;
     }
 
     a:hover {
-      color: inherit;
+      color: var(--theme-color);
+      text-shadow: 10px 10px 10px rgba(255, 255, 255, 0.2);
       text-decoration: none;
     }
 
@@ -163,7 +245,7 @@
     }
 
     ::selection {
-      background-color: #6A9955;
+      background-color: var(--theme-color);
       color: black;
     }
 
@@ -175,6 +257,7 @@
       padding: 0;
       background-color: #202020;
       font-family: "Monaco";
+      cursor: none;
     }
 
     .flex {
@@ -214,12 +297,19 @@
       border-radius: 5px;
     }
 
+    .profile img {
+      background-color: var(--theme-color);
+    }
+
     canvas {
       position: fixed;
       z-index: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
+    }
+    .upper{
+      z-index: 10;
     }
   </style>
 </head>
@@ -241,6 +331,17 @@
     <div style="width: 100%; text-align: center;">
       <p id="info"></p>
     </div>
+
+    <!-- <ul>
+      <li>
+        <label>Wechat:</label>
+        <span>dlroWiH</span>
+      </li>
+      <li>
+        <label>Mail:</label>
+        <span>himatthew@foxmail.com</span>
+      </li>
+    </ul> -->
   </div>
 </body>
 
