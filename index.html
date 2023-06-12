@@ -25,6 +25,7 @@
 
 
       ctx.save()
+      ctx.font = '10px Monaco'
       // 缩放画布
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
@@ -49,15 +50,15 @@
       ctx.fill();
       ctx.restore()
 
-      // ctx.fillStyle = '#fff'
-      // for (let i = 0; i < 12; i++) {
-      //   ctx.beginPath();
-      //   const y = h / 12 * (12 - i)
-      //   ctx.moveTo(w, y)
-      //   ctx.lineTo(w - 10, y)
-      //   // ctx.fillText(i + 1, w - 15, y - 10)
-      //   ctx.stroke()
-      // }
+      ctx.fillStyle = 'rgba(255, 255, 255, .4)'
+      for (let i = 0; i < 12; i++) {
+        ctx.beginPath();
+        const y = h / 12 * (12 - i)
+        ctx.moveTo(w, y)
+        ctx.lineTo(w - 10, y)
+        ctx.fillText(i + 1, w - 15, y - 10)
+        ctx.stroke()
+      }
 
       // 将坐标系移动到中心
       ctx.translate(w / 2, h / 2);
@@ -299,6 +300,8 @@
       flex-direction: column;
       align-items: center;
       color: #C5C5C5;
+      font-size: 30px;
+      line-height: 80px;
     }
 
     /* h1 p{
