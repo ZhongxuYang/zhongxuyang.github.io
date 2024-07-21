@@ -212,23 +212,24 @@
   <script>
     document.addEventListener("keydown", function (e) {
       // e.preventDefault()
+      const ifSpaceKey = e.keyCode === 32
+      if (ifSpaceKey) return location.href = '/blog'
+      
+      // const ifCtrl = e.ctrlKey
+      // const ifCommand = e.metaKey
 
-      const ifCtrl = e.ctrlKey
-      const ifCommand = e.metaKey
+      // if (!(ifCtrl || ifCommand)) return
+      // switch (e.keyCode) {
+      //   case 66:
+      //     location.href = '/blog'
+      //     break;
+      //   case 82:
+      //     location.href = '/renderer2d'
+      //     break;
 
-      if (!(ifCtrl || ifCommand)) return
-      console.log(`${e.key}: ${e.keyCode}`);
-      switch (e.keyCode) {
-        case 66:
-          location.href = 'https://zhongxuyang.github.io/blog'
-          break;
-        case 82:
-          location.href = 'https://zhongxuyang.github.io/renderer2d'
-          break;
-
-        default:
-          break;
-      }
+      //   default:
+      //     break;
+      // }
     }, false)
   </script>
   <style>
@@ -267,6 +268,7 @@
       background-color: #202020;
       font-family: "Monaco";
       cursor: none;
+      color: #C5C5C5;
     }
 
     .flex {
@@ -277,6 +279,11 @@
 
     .flex-col {
       flex-direction: column;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
     }
 
     @keyframes pulse {
@@ -299,7 +306,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: #C5C5C5;
       font-size: 30px;
       line-height: 80px;
     }
@@ -347,6 +353,33 @@
     .upper {
       z-index: 10;
     }
+
+    .additional {
+      position: absolute;
+      z-index: 10;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      display: flex;
+      color: #4F4F4F;
+    }
+    .additional li {
+      position: relative;
+      list-style: none;
+      padding: 0 10px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+    .additional li:not(:last-of-type)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 4px;
+      height: 4px;
+      background-color: #4F4F4F;
+      border-radius: 50%;
+      transform: translate(50%, -50%);
+    }
   </style>
 </head>
 
@@ -368,16 +401,17 @@
       <p id="info"></p>
     </div>
 
-    <!-- <ul>
+    <ul class="additional">
+      <!-- <li>
+        <a href="mailto:himatthew@foxmail.com?subject=Message%20from%20zhongxuyang.github.io&body=Hi!">himatthew@foxmail.com</a>
+      </li> -->
       <li>
-        <label>Wechat:</label>
-        <span>dlroWiH</span>
+        <a href="/blog">Press Space to Enter</a>
       </li>
-      <li>
-        <label>Mail:</label>
-        <span>himatthew@foxmail.com</span>
-      </li>
-    </ul> -->
+      <!-- <li>
+        <a href="https://space.bilibili.com/8224871">Bilibili</a>
+      </li> -->
+    </ul>
   </div>
 </body>
 
